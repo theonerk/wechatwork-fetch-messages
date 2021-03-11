@@ -1,4 +1,4 @@
 #!/bin/bash
 
 mvn clean package -Dmaven.test.skip=true
-sudo docker build -t nike-wechatwork-messages  .
+docker build -t nike-wechatwork-messages  .
