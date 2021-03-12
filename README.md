@@ -1,5 +1,11 @@
 # wehatwork-fetch-messages
 
+## useage
+微信企业会话存档 
+
+https://open.work.weixin.qq.com/api/doc/90000/90135/91361
+
+
 ## how to use 
 
 1. sh build.sh 
