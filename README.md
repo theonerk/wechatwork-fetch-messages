@@ -1,4 +1,4 @@
-rongk# wehatwork-fetch-messages
+# wehatwork-fetch-messages
 
 ## useage
 微信企业会话存档 
