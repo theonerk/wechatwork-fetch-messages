@@ -1,4 +1,4 @@
-package com.nike.wechatwork;
+package com.rongk.wechatwork;
 
 import java.io.File;
 import java.io.FileOutputStream;

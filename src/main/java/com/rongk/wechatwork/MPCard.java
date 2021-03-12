@@ -1,4 +1,4 @@
-package com.nike.wechatwork;
+package com.rongk.wechatwork;
 
 public class MPCard {
 	private String title;
