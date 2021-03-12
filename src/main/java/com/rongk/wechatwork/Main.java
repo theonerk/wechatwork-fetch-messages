@@ -55,20 +55,20 @@ public class Main {
 				}
 				String fileName = "";
 				String sdkfileid = "";
-				String storeFileFolder = "\\home\\tem\\";
+				String storeFileFolder = "";
 				switch (decryptMessage.getMsgtype()) {
 				case "text":
 					System.out.println(decryptMessage.getText().getContent());
 					break;
 				case "emotion":
-					fileName = storeFileFolder + "\\emotions\\" + decryptMessage.getMsgid() + ".gif";
+					fileName = storeFileFolder + "emotions/" + decryptMessage.getMsgid() + ".gif";
 					sdkfileid = decryptMessage.getEmotion().getSdkfileid();
 					storeMediafile(sdk, sdkfileid, fileName);
 					System.out.println(srtDecryptMsg);
 					break;
 				case "video":
 					System.out.println("video");
-					fileName = storeFileFolder + "\\videos\\" + decryptMessage.getMsgid() + ".mp4";
+					fileName = storeFileFolder + "videos/" + decryptMessage.getMsgid() + ".mp4";
 					sdkfileid = decryptMessage.getVideo().getSdkfileid();
 					storeMediafile(sdk, sdkfileid, fileName);
 					System.out.println(srtDecryptMsg);
@@ -77,7 +77,7 @@ public class Main {
 					System.out.println("image");
 					System.out.println(srtDecryptMsg);
 					sdkfileid = decryptMessage.getImage().getSdkfileid();
-					fileName = storeFileFolder + "\\images\\" + decryptMessage.getMsgid() + ".jpg";
+					fileName = storeFileFolder + "images/" + decryptMessage.getMsgid() + ".jpg";
 					storeMediafile(sdk, sdkfileid, fileName);
 					System.out.println(srtDecryptMsg);
 					break;

@@ -4,6 +4,9 @@ FROM java:8
 WORKDIR /usr/src/app
 USER root
 
+RUN ["mkdir","images"] 
+RUN ["mkdir","emotions"] 
+RUN ["mkdir","videos"] 
 copy ./target/*.jar ./
 copy ./lib/*.so ./lib/ 
 copy ./start.sh ./
