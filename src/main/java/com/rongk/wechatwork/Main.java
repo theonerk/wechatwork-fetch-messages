@@ -16,7 +16,9 @@ public class Main {
 		String secret = System.getenv("SECRET");
 		long sdk = Finance.NewSdk();
 		ret = Finance.Init(sdk, appid, secret);
-		if (ret != 0) {
+		System.out.println("init sdk err ret " + ret);
+		if (ret != 0) {	
+			
 			Finance.DestroySdk(sdk);
 			System.out.println("init sdk err ret " + ret);
 			return;
