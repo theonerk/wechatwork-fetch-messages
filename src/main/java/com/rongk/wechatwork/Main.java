@@ -18,7 +18,7 @@ public class Main {
 		ret = Finance.Init(sdk, appid, secret);
 		System.out.println("init sdk err ret " + ret);
 		if (ret != 0) {	
-			
+			System.out.println("return after init" + ret);
 			Finance.DestroySdk(sdk);
 			System.out.println("init sdk err ret " + ret);
 			return;
@@ -27,13 +27,14 @@ public class Main {
 		// 拉取会话存档
 
 		int seq = Integer.parseInt(System.getenv("SEQ"));
-		;
+		System.out.println("SEQ:" + seq);
 		int limit = 1;
 		String proxy = null;
 		String passwd = null;
 		int timeout = 1000;
 		while (true) {
 			long slice = Finance.NewSlice();
+			System.out.println("slice:" + slice);
 			ret = Finance.GetChatData(sdk, seq, limit, proxy, passwd, timeout, slice);
 			if (ret != 0) {
 				System.out.println("getchatdata ret " + ret);
