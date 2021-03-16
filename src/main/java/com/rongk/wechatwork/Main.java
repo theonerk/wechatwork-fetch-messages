@@ -41,7 +41,10 @@ public class Main {
 				Finance.FreeSlice(slice);
 				return;
 			}
+			System.out.println("-----------------------------------------------------");
+		
 			String messages = Finance.GetContentFromSlice(slice);
+			System.out.println("messages:"+messages);
 			Gson gson = new Gson();
 			// System.out.println("-----------------------------------------------------");
 			WechatWorkMessages weworkmessmages = gson.fromJson(messages, WechatWorkMessages.class);
@@ -51,7 +54,7 @@ public class Main {
 				Message msg = weworkmessmages.getChatdata().get(i);
 				// System.out.println(msg);
 				String srtDecryptMsg = decryptMessage(msg.getEncrypt_random_key(), msg.getEncrypt_chat_msg(), sdk);
-				// System.out.println(srtDecryptMsg);
+				System.out.println(srtDecryptMsg);
 				DecryptMessage decryptMessage = gson.fromJson(srtDecryptMsg, DecryptMessage.class);
 				if (decryptMessage == null || decryptMessage.getMsgtype() == null) {
 					continue;
