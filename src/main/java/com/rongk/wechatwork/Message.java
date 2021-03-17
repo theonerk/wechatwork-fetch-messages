@@ -1,5 +1,8 @@
 package com.rongk.wechatwork;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Message {
 
 	private int seq;
@@ -59,10 +62,15 @@ public class Message {
 
 	@Override
 	public String toString() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
-		return "[seq=" + this.seq + ", msgid=" + this.msgid + ", publickey_ver=" + this.publickey_ver
-				+ ", encrypt_random_key=" + this.encrypt_random_key + ", encrypt_chat_msg=" + this.encrypt_chat_msg
-				+ "]";
+		return this.toString();
 	}
 
 }

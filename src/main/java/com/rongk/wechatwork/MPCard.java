@@ -1,5 +1,8 @@
 package com.rongk.wechatwork;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class MPCard {
 	private String title;
 	private String description;
@@ -40,9 +43,14 @@ public class MPCard {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "[title=" + this.title + ", description=" + this.description + ", username=" + this.username
-				+ ", displayname=" + this.displayname + "]";
-	}
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
 
+			e.printStackTrace();
+		}
+
+		return this.toString();
+	}
 }

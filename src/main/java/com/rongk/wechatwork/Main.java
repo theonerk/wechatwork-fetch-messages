@@ -65,40 +65,41 @@ public class Main {
 				String fileName = "";
 				String sdkfileid = "";
 				String storeFileFolder = "";
+				logger.info(decryptMessage.toString());
 				switch (decryptMessage.getMsgtype()) {
 				case "text":
-					logger.info(decryptMessage.getText().getContent());
+					logger.info(decryptMessage.getText().toString());
 					break;
 				case "emotion":
 					fileName = storeFileFolder + "emotions/" + decryptMessage.getMsgid() + ".gif";
 					sdkfileid = decryptMessage.getEmotion().getSdkfileid();
 					storeMediafile(sdk, sdkfileid, fileName);
-					logger.info(srtDecryptMsg);
+					// logger.info(decryptMessage.get);
 					break;
 				case "video":
 					System.out.println("video");
 					fileName = storeFileFolder + "videos/" + decryptMessage.getMsgid() + ".mp4";
 					sdkfileid = decryptMessage.getVideo().getSdkfileid();
 					storeMediafile(sdk, sdkfileid, fileName);
-					logger.info(srtDecryptMsg);
+					// logger.info(srtDecryptMsg);
 					break;
 				case "image":
-					System.out.println("image");
-					System.out.println(srtDecryptMsg);
+					// System.out.println("image");
+					// System.out.println(srtDecryptMsg);
 					sdkfileid = decryptMessage.getImage().getSdkfileid();
 					fileName = storeFileFolder + "images/" + decryptMessage.getMsgid() + ".jpg";
 					storeMediafile(sdk, sdkfileid, fileName);
-					logger.info(srtDecryptMsg);
+					// logger.info(srtDecryptMsg);
 					break;
 				case "weapp":
-					logger.info(decryptMessage.getWeapp().toString());
+					// logger.info(decryptMessage.getWeapp().toString());
 					break;
 				default:
 					logger.info(srtDecryptMsg);
 				}
 			}
 			if (weworkmessmages.getChatdata().size() > 0) {
-				System.out.println(seq);
+				logger.info(seq);
 				seq++;
 				Finance.FreeSlice(slice);
 			} else {
@@ -131,13 +132,14 @@ public class Main {
 			long media_data = Finance.NewMediaData();
 			int ret = Finance.GetMediaData(sdk, indexbuf, sdkfileid, null, null, 1000, media_data);
 			if (ret != 0) {
-				System.out.println("getmediadata ret:" + ret);
+				// System.out.println("getmediadata ret:" + ret);
 				Finance.FreeMediaData(media_data);
 				return;
 			}
-			System.out.printf("getmediadata outindex len:%d, data_len:%d, is_finis:%d\n",
+
+			logger.info(String.format("getmediadata outindex len:%d, data_len:%d, is_finis:%d\n",
 					Finance.GetIndexLen(media_data), Finance.GetDataLen(media_data),
-					Finance.IsMediaDataFinish(media_data));
+					Finance.IsMediaDataFinish(media_data)));
 			try {
 				// 大于512k的文件会分片拉取，此处需要使用追加写，避免后面的分片覆盖之前的数据。
 				FileOutputStream outputStream = new FileOutputStream(new File(fileName), true);
