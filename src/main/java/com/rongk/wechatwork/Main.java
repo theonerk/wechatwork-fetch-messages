@@ -3,10 +3,14 @@ package com.rongk.wechatwork;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.tencent.wework.Finance;
 
 public class Main {
+
+	private final static Logger logger = Logger.getLogger(Main.class);
 
 	public static void main(String[] args) throws Exception {
 
@@ -16,11 +20,12 @@ public class Main {
 		String secret = System.getenv("SECRET");
 		long sdk = Finance.NewSdk();
 		ret = Finance.Init(sdk, appid, secret);
-		System.out.println("init sdk err ret " + ret);
-		if (ret != 0) {	
-			System.out.println("return after init" + ret);
+		logger.info("init sdk err ret " + ret);
+		if (ret != 0) {
+			logger.error("return after init" + ret);
+			// System.out.println("return after init" + ret);
 			Finance.DestroySdk(sdk);
-			System.out.println("init sdk err ret " + ret);
+			// System.out.println("init sdk err ret " + ret);
 			return;
 		}
 
@@ -34,17 +39,15 @@ public class Main {
 		int timeout = 1000;
 		while (true) {
 			long slice = Finance.NewSlice();
-			System.out.println("slice:" + slice);
+			logger.info("slice:" + slice);
 			ret = Finance.GetChatData(sdk, seq, limit, proxy, passwd, timeout, slice);
 			if (ret != 0) {
-				System.out.println("getchatdata ret " + ret);
+				logger.warn("getchatdata ret " + ret);
 				Finance.FreeSlice(slice);
 				return;
 			}
-			System.out.println("-----------------------------------------------------");
-		
 			String messages = Finance.GetContentFromSlice(slice);
-			System.out.println("messages:"+messages);
+			// logger.info( messages);
 			Gson gson = new Gson();
 			// System.out.println("-----------------------------------------------------");
 			WechatWorkMessages weworkmessmages = gson.fromJson(messages, WechatWorkMessages.class);
@@ -54,7 +57,7 @@ public class Main {
 				Message msg = weworkmessmages.getChatdata().get(i);
 				// System.out.println(msg);
 				String srtDecryptMsg = decryptMessage(msg.getEncrypt_random_key(), msg.getEncrypt_chat_msg(), sdk);
-				System.out.println(srtDecryptMsg);
+
 				DecryptMessage decryptMessage = gson.fromJson(srtDecryptMsg, DecryptMessage.class);
 				if (decryptMessage == null || decryptMessage.getMsgtype() == null) {
 					continue;
@@ -64,20 +67,20 @@ public class Main {
 				String storeFileFolder = "";
 				switch (decryptMessage.getMsgtype()) {
 				case "text":
-					System.out.println(decryptMessage.getText().getContent());
+					logger.info(decryptMessage.getText().getContent());
 					break;
 				case "emotion":
 					fileName = storeFileFolder + "emotions/" + decryptMessage.getMsgid() + ".gif";
 					sdkfileid = decryptMessage.getEmotion().getSdkfileid();
 					storeMediafile(sdk, sdkfileid, fileName);
-					System.out.println(srtDecryptMsg);
+					logger.info(srtDecryptMsg);
 					break;
 				case "video":
 					System.out.println("video");
 					fileName = storeFileFolder + "videos/" + decryptMessage.getMsgid() + ".mp4";
 					sdkfileid = decryptMessage.getVideo().getSdkfileid();
 					storeMediafile(sdk, sdkfileid, fileName);
-					System.out.println(srtDecryptMsg);
+					logger.info(srtDecryptMsg);
 					break;
 				case "image":
 					System.out.println("image");
@@ -85,16 +88,14 @@ public class Main {
 					sdkfileid = decryptMessage.getImage().getSdkfileid();
 					fileName = storeFileFolder + "images/" + decryptMessage.getMsgid() + ".jpg";
 					storeMediafile(sdk, sdkfileid, fileName);
-					System.out.println(srtDecryptMsg);
+					logger.info(srtDecryptMsg);
 					break;
 				case "weapp":
-					System.out.println(decryptMessage.getWeapp().toString());
+					logger.info(decryptMessage.getWeapp().toString());
 					break;
-				default: // 可选
-					System.out.println(srtDecryptMsg);
+				default:
+					logger.info(srtDecryptMsg);
 				}
-				System.out.println("-----------------------------------------------------");
-
 			}
 			if (weworkmessmages.getChatdata().size() > 0) {
 				System.out.println(seq);
@@ -113,7 +114,7 @@ public class Main {
 		long msg = Finance.NewSlice();
 		int ret = Finance.DecryptData(sdk, encrypt_key, encrypt_chat_msg, msg);
 		if (ret != 0) {
-			System.out.println("getchatdata ret " + ret);
+			logger.warn("getchatdata ret-" + ret);
 			Finance.FreeSlice(msg);
 			return "";
 		}
