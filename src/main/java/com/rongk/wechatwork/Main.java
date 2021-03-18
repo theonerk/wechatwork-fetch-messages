@@ -14,7 +14,6 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		// System.out.println("privKeyPEM" + privKeyPEM);
 		long ret = 0;
 		String appid = System.getenv("APPID");
 		String secret = System.getenv("SECRET");
@@ -23,16 +22,10 @@ public class Main {
 		logger.info("init sdk err ret " + ret);
 		if (ret != 0) {
 			logger.error("return after init" + ret);
-			// System.out.println("return after init" + ret);
 			Finance.DestroySdk(sdk);
-			// System.out.println("init sdk err ret " + ret);
 			return;
 		}
-
-		// 拉取会话存档
-
 		int seq = Integer.parseInt(System.getenv("SEQ"));
-		System.out.println("SEQ:" + seq);
 		int limit = 1;
 		String proxy = null;
 		String passwd = null;
@@ -55,7 +48,6 @@ public class Main {
 
 			for (int i = 0; i < weworkmessmages.getChatdata().size(); i++) {
 				Message msg = weworkmessmages.getChatdata().get(i);
-				// System.out.println(msg);
 				String srtDecryptMsg = decryptMessage(msg.getEncrypt_random_key(), msg.getEncrypt_chat_msg(), sdk);
 
 				DecryptMessage decryptMessage = gson.fromJson(srtDecryptMsg, DecryptMessage.class);
@@ -65,10 +57,11 @@ public class Main {
 				String fileName = "";
 				String sdkfileid = "";
 				String storeFileFolder = "";
-				logger.info(decryptMessage.toString());
+				System.out.println(srtDecryptMsg);
 				switch (decryptMessage.getMsgtype()) {
 				case "text":
-					logger.info(decryptMessage.getText().toString());
+					System.out.println(decryptMessage.getText().toString());
+					// logger.info(decryptMessage.getText().toString());
 					break;
 				case "emotion":
 					fileName = storeFileFolder + "emotions/" + decryptMessage.getMsgid() + ".gif";
@@ -95,11 +88,11 @@ public class Main {
 					// logger.info(decryptMessage.getWeapp().toString());
 					break;
 				default:
-					logger.info(srtDecryptMsg);
+					// logger.info(srtDecryptMsg);
 				}
 			}
 			if (weworkmessmages.getChatdata().size() > 0) {
-				logger.info(seq);
+				logger.info("seq:" + seq);
 				seq++;
 				Finance.FreeSlice(slice);
 			} else {
